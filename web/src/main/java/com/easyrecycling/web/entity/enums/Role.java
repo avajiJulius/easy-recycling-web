@@ -5,14 +5,20 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum Role {
-    SINGLE_USER(Stream.of(Permission.USER_READ, Permission.USER_WRITE).collect(Collectors.toSet())),
-    CORP(Stream.of(Permission.CORP_READ, Permission.CORP_WRITE).collect(Collectors.toSet())),
-    ADMIN(Stream.of(Permission.ADMIN_READ, Permission.ADMIN_WRITE).collect(Collectors.toSet()));
+    SINGLE_USER("user", Stream.of(Permission.USER_READ, Permission.USER_WRITE).collect(Collectors.toSet())),
+    CORP("corp", Stream.of(Permission.CORP_READ, Permission.CORP_WRITE).collect(Collectors.toSet())),
+    ADMIN("admin", Stream.of(Permission.ADMIN_READ, Permission.ADMIN_WRITE).collect(Collectors.toSet()));
 
+    private String roleName;
     private final Set<Permission> permissions;
 
-    Role(Set<Permission> permissions) {
+    Role(String roleName, Set<Permission> permissions) {
+        this.roleName = roleName;
         this.permissions = permissions;
+    }
+
+    public String getRoleName() {
+        return roleName;
     }
 
     public Set<Permission> getPermissions() {

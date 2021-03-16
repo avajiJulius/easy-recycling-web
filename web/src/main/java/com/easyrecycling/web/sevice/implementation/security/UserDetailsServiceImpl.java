@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,10 +27,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) {
-        User user = Optional.ofNullable(userRepository.findUserByEmail(email))
-                .orElseThrow(() -> {
-                    throw new UsernameNotFoundException("User doesn't exists");
-                });
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new UsernameNotFoundException("User don't exist"));
 
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(), user.getPassword(),
